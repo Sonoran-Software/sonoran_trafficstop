@@ -18,6 +18,8 @@
       title = Title that will appear in CAD
       code = 10 code that will be used for the new dispatch
       address = street / cross street string
+      postal = postal of the call
       description = description of Traffic Stop
+      notes = notes for the call
       source = playerId
 ```

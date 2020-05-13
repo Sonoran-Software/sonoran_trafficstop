@@ -8,28 +8,39 @@
 
 local pluginConfig = Config.plugins["trafficstop"]
 registerApiType("NEW_DISPATCH", "emergency")
+
+-- Color handling...
+
+
 -- Traffic Stop Handler
 function HandleTrafficStop(type, source, args, rawCommand)
     local identifier = GetIdentifiers(source)[Config.primaryIdentifier]
     local index = findIndex(identifier)
-    local origin = pluginConfig.orgin 
+    local origin = pluginConfig.origin 
     local status =  pluginConfig.status
     local priority =  pluginConfig.priority
     local address = LocationCache[source] ~= nil and LocationCache[source].location or 'Unknown'
+    local postal = isPluginLoaded("postals") and getNearestPostal(source) or ""
     local title =  pluginConfig.title
     local code =  pluginConfig.code
     local units = {identifier}
+    local notes = {}
+    local notesStr = ""
     -- Checking if there are any description arguments.
     if args[1] then
         local description = table.concat(args, " ")
         if type == "ts" then
             description = "Traffic Stop - "..description
+            if isPluginLoaded("wraithv2") and wraithLastPlates ~= nil then
+                if wraithLastPlates.locked ~= nil then
+                    local plate = wraithLastPlates.locked.plate:gsub("%s+","")
+                    table.insert(notes, ("PLATE: %s"):format(plate))
+                end
+            end
         end
-    
-
-   
+        notesStr = table.concat(notes, " ")
         -- Sending the API event
-        TriggerEvent('SonoranCAD::trafficstop:SendTrafficApi', origin, status, priority, address, title, code, description, units, source)
+        TriggerEvent('SonoranCAD::trafficstop:SendTrafficApi', origin, status, priority, address, postal, title, code, description, units, notesStr, source)
         -- Sending the user a message stating the call has been sent
         TriggerClientEvent("chat:addMessage", source, {args = {"^0^5^*[SonoranCAD]^r ", "^7Details regarding you traffic Stop have been added to CAD"}})
     else
@@ -51,9 +62,9 @@ end)
 
 -- Client TraficStop request
 RegisterServerEvent('SonoranCAD::trafficstop:SendTrafficApi')
-AddEventHandler('SonoranCAD::trafficstop:SendTrafficApi', function(origin, status, priority, address, title, code, description, units, source)
+AddEventHandler('SonoranCAD::trafficstop:SendTrafficApi', function(origin, status, priority, address, postal, title, code, description, units, notes, source)
     -- send an event to be consumed by other resources
-    TriggerEvent("SonoranCAD::trafficstop:cadIncomingTraffic", origin, status, priority, address, title, code, description, units, source)
+    TriggerEvent("SonoranCAD::trafficstop:cadIncomingTraffic", origin, status, priority, address, postal, title, code, description, units, notes, source)
     if Config.apiSendEnabled then
         local data = {
             ['serverId'] = Config.serverId, 
@@ -61,13 +72,13 @@ AddEventHandler('SonoranCAD::trafficstop:SendTrafficApi', function(origin, statu
             ['status'] = status, 
             ['priority'] = priority, 
             ['block'] = "", -- not used, but required
-            ['postal'] = "", --TODO
+            ['postal'] = postal, --TODO
             ['address'] = address, 
             ['title'] = title, 
             ['code'] = code, 
             ['description'] = description, 
             ['units'] = units,
-            ['notes'] = "" -- required
+            ['notes'] = notes -- required
         }
         debugLog("sending Traffic Stop!")
         performApiRequest({data}, 'NEW_DISPATCH', function() end)
