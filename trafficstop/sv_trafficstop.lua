@@ -55,7 +55,7 @@ CreateThread(function()
     if pluginConfig.enablets then
         RegisterCommand('ts', function(source, args, rawCommand)
             HandleTrafficStop("ts", source, args, rawCommand)
-        end, false)
+        end, true)
     end
     
 
