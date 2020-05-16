@@ -26,6 +26,7 @@ function HandleTrafficStop(type, source, args, rawCommand)
     local units = {identifier}
     local notes = {}
     local notesStr = ""
+    address = address:gsub('%b[]', '')
     -- Checking if there are any description arguments.
     if args[1] then
         local description = table.concat(args, " ")
