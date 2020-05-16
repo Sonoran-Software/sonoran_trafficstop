@@ -20,4 +20,4 @@ config = {
     code = "10-11 - Traffic Stop" -- Change this to reflect your communities 10 Code for a Traffic Stop
 }
 
-Config.RegisterPluginConfig(config.pluginName, config)
+--Config.RegisterPluginConfig(config.pluginName, config)
