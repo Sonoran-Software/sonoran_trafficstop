@@ -9,7 +9,7 @@ config = {
     enabled = false,
     pluginName = "trafficstop", -- name your plugin here
     pluginAuthor = "SonoranCAD", -- author
-    requiresPlugins = {"locations", "postals"}, -- required plugins for this plugin to work, separated by commas
+    requiresPlugins = {"locations"}, -- required plugins for this plugin to work, separated by commas
 
     -- put your configuration options below
     origin = 2, -- 0 = CALLER / 1 = RADIO DISPATCH / 2 = OBSERVED / 3 = WALK_UP
