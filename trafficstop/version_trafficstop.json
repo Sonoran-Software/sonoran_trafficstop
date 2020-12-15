@@ -1,5 +1,6 @@
 {
-    "version": "1.2",
+    "version": "1.2.1",
     "check_url": "https://raw.githubusercontent.com/Sonoran-Software/sonoran_trafficstop/master/trafficstop/version_trafficstop.json",
-    "download_url": "https://github.com/Sonoran-Software/sonoran_trafficstop/"
+    "download_url": "https://github.com/Sonoran-Software/sonoran_trafficstop/",
+    "configVersion": "1.1.0"
 }

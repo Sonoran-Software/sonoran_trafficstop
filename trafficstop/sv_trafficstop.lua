@@ -10,10 +10,11 @@ local pluginConfig = Config.GetPluginConfig("trafficstop")
 
 if pluginConfig.enabled then
 
+    if pluginConfig.trafficCommand == nil then
+        pluginConfig.trafficCommand = "ts"
+    end
+
     registerApiType("NEW_DISPATCH", "emergency")
-
-    -- Color handling...
-
 
     -- Traffic Stop Handler
     function HandleTrafficStop(type, source, args, rawCommand)
@@ -53,7 +54,7 @@ if pluginConfig.enabled then
         end
     end
 
-    RegisterCommand('ts', function(source, args, rawCommand)
+    RegisterCommand(pluginConfig.trafficCommand, function(source, args, rawCommand)
         HandleTrafficStop("ts", source, args, rawCommand)
     end, true)
 

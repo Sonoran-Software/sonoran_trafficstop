@@ -16,7 +16,8 @@ config = {
     status = 1, -- 0 = PENDING / 1 = ACTIVE / 2 = CLOSED
     priority = 1, -- 1, 2, or 3
     title = "Traffic Stop", -- This is the title of the call by default it is sent as "Traffic Stop"
-    code = "10-11 - Traffic Stop" -- Change this to reflect your communities 10 Code for a Traffic Stop
+    code = "10-11 - Traffic Stop", -- Change this to reflect your communities 10 Code for a Traffic Stop
+    trafficCommand = "ts" -- command to trigger the traffic stop
 }
 
 if config.enabled then
