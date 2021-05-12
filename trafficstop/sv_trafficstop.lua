@@ -76,7 +76,7 @@ if pluginConfig.enabled then
                 ['code'] = code, 
                 ['description'] = description, 
                 ['units'] = units,
-                ['notes'] = notes -- required
+                ['notes'] = {notes} -- required
             }
             debugLog("sending Traffic Stop!")
             performApiRequest({data}, 'NEW_DISPATCH', function() end)
