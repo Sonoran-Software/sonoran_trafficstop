@@ -6,7 +6,7 @@
     Description: Implements ts command
 ]]
 
-CreateThread(function() Config.LoadPlugin("dispatchnotify", function(pluginConfig)
+CreateThread(function() Config.LoadPlugin("trafficstop", function(pluginConfig)
 
 if pluginConfig.enabled then
 
