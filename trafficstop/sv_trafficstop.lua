@@ -56,7 +56,7 @@ if pluginConfig.enabled then
 
     RegisterCommand(pluginConfig.trafficCommand, function(source, args, rawCommand)
         HandleTrafficStop("ts", source, args, rawCommand)
-    end, true)
+    end, pluginConfig.usePermissions)
 
     -- Client TraficStop request
     RegisterServerEvent('SonoranCAD::trafficstop:SendTrafficApi')
