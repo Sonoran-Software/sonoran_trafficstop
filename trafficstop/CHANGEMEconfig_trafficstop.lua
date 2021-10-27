@@ -17,7 +17,8 @@ config = {
     priority = 1, -- 1, 2, or 3
     title = "Traffic Stop", -- This is the title of the call by default it is sent as "Traffic Stop"
     code = "10-11 - Traffic Stop", -- Change this to reflect your communities 10 Code for a Traffic Stop
-    trafficCommand = "ts" -- command to trigger the traffic stop
+    trafficCommand = "ts", -- command to trigger the traffic stop
+    usePermissions = true -- if true, user will need the permission "command.ts" to run the command.
 }
 
 if config.enabled then
