@@ -28,7 +28,7 @@ if pluginConfig.enabled then
         local title =  pluginConfig.title
         local code =  pluginConfig.code
         local units = {identifier}
-        local notes = {}
+        local tempNotes = {}
         local notesStr = ""
         address = address:gsub('%b[]', '')
         -- Checking if there are any description arguments.
@@ -39,13 +39,19 @@ if pluginConfig.enabled then
                 if isPluginLoaded("wraithv2") and wraithLastPlates ~= nil then
                     if wraithLastPlates.locked ~= nil then
                         local plate = wraithLastPlates.locked.plate:gsub("%s+","")
-                        table.insert(notes, ("PLATE: %s"):format(plate))
+                        table.insert(tempNotes, ("PLATE: %s"):format(plate))
                     end
                 end
             end
-            notesStr = table.concat(notes, " ")
+            notesStr = table.concat(tempNotes, " ")
+            local notes = {}
+            if notesStr ~= "" then
+                notes = {
+                    { ['time'] = "00:00:00", ['label'] = "Dispatch", ['type'] = "text", ['content'] = notesStr }
+                }
+            end
             -- Sending the API event
-            TriggerEvent('SonoranCAD::trafficstop:SendTrafficApi', origin, status, priority, address, postal, title, code, description, units, notesStr, source)
+            TriggerEvent('SonoranCAD::trafficstop:SendTrafficApi', origin, status, priority, address, postal, title, code, description, units, notes, source)
             -- Sending the user a message stating the call has been sent
             TriggerClientEvent("chat:addMessage", source, {args = {"^0^5^*[SonoranCAD]^r ", "^7Details regarding you traffic Stop have been added to CAD"}})
         else
@@ -76,7 +82,7 @@ if pluginConfig.enabled then
                 ['code'] = code, 
                 ['description'] = description, 
                 ['units'] = units,
-                ['notes'] = {notes} -- required
+                ['notes'] = notes -- required
             }
             debugLog("sending Traffic Stop!")
             performApiRequest({data}, 'NEW_DISPATCH', function() end)
